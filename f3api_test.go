@@ -222,6 +222,8 @@ func TestPaymentsGET(t *testing.T) {
 
 	err = json.Unmarshal(buf, payments)
 	assert.Nil(t, err)
+
+	assert.True(t, len(payments.Data) > 0)
 	for _, payment := range payments.Data {
 		assert.True(t, payment.IsValid())
 	}
