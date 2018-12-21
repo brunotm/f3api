@@ -1,0 +1,397 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "F3 Payment API [https://github.com/brunotm/f3api](https://github.com/brunotm/f3api)",
+    "version": "0.0.1",
+    "title": "Payment API",
+    "contact": {
+      "email": "brunotm@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "basePath": "/v1",
+  "tags": [
+    {
+      "name": "payment",
+      "description": "Payment create, read, update and delete"
+    },
+    {
+      "name": "payments",
+      "description": "Query payments"
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/payment": {
+      "post": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "Create a payment",
+        "operationId": "addPayment",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Payment object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Payment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "payment created",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          },
+          "400": {
+            "description": "invalid payment",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        }
+      }
+    },
+    "/payment/{paymentId}": {
+      "get": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "Get a payment",
+        "operationId": "getPaymentByID",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "Payment ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "payment found",
+            "schema": {
+              "$ref": "#/definitions/Payment"
+            }
+          },
+          "400": {
+            "description": "invalid payment id",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          },
+          "404": {
+            "description": "payment not found",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "Update a payment",
+        "operationId": "updatePayment",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "Payment ID to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Payment object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Payment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "payment updated",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          },
+          "400": {
+            "description": "invalid payment id",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          },
+          "404": {
+            "description": "payment not found",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "Delete a payment",
+        "operationId": "deletePayment",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "Payment ID to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          },
+          "400": {
+            "description": "invalid payment Id",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          },
+          "404": {
+            "description": "payment not found",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          }
+        }
+      }
+    },
+    "/payments": {
+      "get": {
+        "tags": [
+          "payments"
+        ],
+        "summary": "Get all payments",
+        "operationId": "getAllPayments",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Payments"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Payment": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "organisation_id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "version": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "attributes": {
+          "$ref": "#/definitions/Attributes"
+        }
+      }
+    },
+    "Attributes": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "string"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "end_to_end_reference": {
+          "type": "string"
+        },
+        "numeric_reference": {
+          "type": "string"
+        },
+        "payment_id": {
+          "type": "string"
+        },
+        "payment_purpose": {
+          "type": "string"
+        },
+        "payment_scheme": {
+          "type": "string"
+        },
+        "payment_type": {
+          "type": "string"
+        },
+        "processing_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "reference": {
+          "type": "string"
+        },
+        "scheme_payment_type": {
+          "type": "string"
+        },
+        "scheme_payment_sub_type": {
+          "type": "string"
+        },
+        "fx": {
+          "$ref": "#/definitions/FX"
+        },
+        "sponsor_party": {
+          "$ref": "#/definitions/Party"
+        },
+        "beneficiary_party": {
+          "$ref": "#/definitions/Party"
+        },
+        "debtor_party": {
+          "$ref": "#/definitions/Party"
+        },
+        "charges_information": {
+          "$ref": "#/definitions/Charges"
+        }
+      }
+    },
+    "FX": {
+      "type": "object",
+      "properties": {
+        "contract_reference": {
+          "type": "string"
+        },
+        "exchange_rate": {
+          "type": "string"
+        },
+        "original_amount": {
+          "type": "string"
+        },
+        "original_currency": {
+          "type": "string"
+        }
+      }
+    },
+    "Party": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "account_name": {
+          "type": "string"
+        },
+        "account_number": {
+          "type": "string"
+        },
+        "account_number_code": {
+          "type": "string"
+        },
+        "account_type": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "address": {
+          "type": "string"
+        },
+        "bank_id": {
+          "type": "string"
+        },
+        "bank_id_code": {
+          "type": "string"
+        }
+      }
+    },
+    "Charge": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "string"
+        },
+        "currency": {
+          "type": "string"
+        }
+      }
+    },
+    "Charges": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Charge"
+      }
+    },
+    "Payments": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Payment"
+          }
+        },
+        "links": {
+          "$ref": "#/definitions/links"
+        }
+      }
+    },
+    "Response": {
+      "type": "object",
+      "properties": {
+        "reason": {
+          "type": "string"
+        },
+        "links": {
+          "$ref": "#/definitions/links"
+        }
+      }
+    },
+    "links": {
+      "type": "object",
+      "properties": {
+        "self": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
