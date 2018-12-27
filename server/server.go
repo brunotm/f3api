@@ -66,12 +66,11 @@ func New(config Config, store Store) (server *Server) {
 }
 
 // Start serving
-func (s *Server) Start() {
-	s.http.ListenAndServe()
-	err := s.http.ListenAndServe()
-	if err != http.ErrServerClosed {
-		panic(err)
+func (s *Server) Start() (err error) {
+	if err = s.http.ListenAndServe(); err != http.ErrServerClosed {
+		return err
 	}
+	return nil
 }
 
 func (s *Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
@@ -84,7 +83,7 @@ func (s *Server) Close(ctx context.Context) (err error) {
 }
 
 // AddHandler adds a handler for the given method and path
-func (s *Server) AddHandler(method, path string, handler httprouter.Handle) {
+func (s *Server) AddHandler(method, path string, handler Handle) {
 	s.router.Handle(method, path, handler)
 }
 
@@ -94,8 +93,8 @@ func (s *Server) AddStoreHandler(method, path string, handler StoreHandler) {
 }
 
 // BasicAuth middleware
-func BasicAuth(h httprouter.Handle, requiredUser, requiredPassword string) httprouter.Handle {
-	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func BasicAuth(h httprouter.Handle, requiredUser, requiredPassword string) Handle {
+	return func(w http.ResponseWriter, r *http.Request, ps Params) {
 		user, password, hasAuth := r.BasicAuth()
 		if hasAuth && user == requiredUser && password == requiredPassword {
 			h(w, r, ps)
