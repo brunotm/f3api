@@ -61,6 +61,11 @@ func (s *Store) Close() (err error) {
 	return s.db.Close()
 }
 
+func (s *Store) Remove() (err error) {
+	s.db.Close()
+	return os.RemoveAll(s.path)
+}
+
 func (s *Store) Get(key []byte, callback func(value []byte, err error)) {
 	s.db.View(
 		func(txn *badger.Txn) error {

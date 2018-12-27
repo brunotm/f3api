@@ -103,7 +103,7 @@ var (
 )
 
 func buildServer() (srv *server.Server, err error) {
-	store, err = badgerdb.Open(*dataPath)
+	store, err = badgerdb.Open("./testdb")
 	if err != nil {
 		return nil, err
 	}
@@ -184,7 +184,7 @@ func TestPaymentCRUD(t *testing.T) {
 	t.Log(string(buf))
 	assert.Nil(t, err)
 
-	assert.Nil(t, store.Close())
+	assert.Nil(t, store.Remove())
 
 }
 
@@ -228,7 +228,7 @@ func TestPaymentsGET(t *testing.T) {
 		assert.True(t, payment.IsValid())
 	}
 
-	assert.Nil(t, store.Close())
+	assert.Nil(t, store.Remove())
 }
 
 type response struct {
